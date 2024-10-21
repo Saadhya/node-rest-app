@@ -16,7 +16,7 @@
 # middleware
 - client-req-middleware-req-route
 - route return response to the client
-- get, post, put, patch
+- get, post, put, patch, delete done
 - 
 # using promise
  await req.book.save()
@@ -41,5 +41,16 @@ async function saveData() {
 }
 
 saveData();
+
+# using a query:-
+async function deleteBook(req, res) {
+    try {
+        const result = await BookModel.deleteOne({ _id: req.params.id }); // Use the appropriate ID
+        res.status(200).json({ message: 'Book deleted', result });
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting book' });
+    }
+}
+
 
 

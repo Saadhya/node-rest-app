@@ -6,8 +6,8 @@ function routes(bookAPI) {
 
     baseRouter.route('/books')
         .post((req, res) => {
+            // console.log("post: "+req.body);
             const book = new bookAPI(req.body);
-            // console.log(book);
             book.save();
             return res.status(201).json(book);
         })
@@ -58,10 +58,10 @@ function routes(bookAPI) {
             try {
                 const book = await bookAPI.findById(req.params.bookId)
                 book.title = req.body.title,
-                book.genre = req.body.genre,
-                book.author = req.body.author,
-                book.read = req.body.read,
-                await book.save();
+                    book.genre = req.body.genre,
+                    book.author = req.body.author,
+                    book.read = req.body.read,
+                    await book.save();
                 return res.status(200).json(book);
 
             } catch (err) {
@@ -70,8 +70,7 @@ function routes(bookAPI) {
 
         })
         // patch book with bookid and read-false/true
-        .patch(async (req, res) => {
-            console.log("patch " + req.book.author);
+        .patch((req, res) => {
             const { book } = req;
             // eslint-disable-next-line no-underscore-dangle
             if (req.body._id) {
@@ -83,8 +82,8 @@ function routes(bookAPI) {
                 const value = item[1];
                 book[key] = value;
             })
-            // promise
-            await req.book.save()
+            // promise- because callback is removed 
+            req.book.save()
                 .then(resp => {
                     return res.json(resp)
                 })
@@ -93,6 +92,32 @@ function routes(bookAPI) {
                         return res.send("error : " + err);
                     }
                 })
+        })
+        .delete((req, res) => {
+            // console.log("delete " + req.book);
+            // const book = bookAPI.findById(req.params.bookId);
+            // book.then(resp => {
+            //         if (!resp) {
+            //             return res.status(404).send("Book not found");
+            //         }
+            //         // Now that we have the book, delete it
+            //         return book.remove(); // or book.remove();
+            //     })
+            //     .then(() => res.status(204))
+            //     .catch(err => {
+            //         return res.send("erro " + err)
+            //     })
+            bookAPI.deleteOne({ _id: req.params.bookId })
+                .then(result => {
+                    if (result.deletedCount === 0) {
+                        return res.status(404).send("Book not found");
+                    }
+                    res.status(204).send(); // Send a no-content response
+                })
+                .catch(err => {
+                    console.error("Error deleting book:", err);
+                    return res.status(500).send("Error: " + err);
+                });
         })
 
     // http://localhost:4000/api/book/6713572856a3ecbb6ad7a47b
