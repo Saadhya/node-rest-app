@@ -4,7 +4,7 @@ const connectDB = require('./db');
 const Book = require('./models/bookModel');
 
 const seedBooks = async () => {
-    // await connectDB();
+    await connectDB();
 
     const books = [
         { title: '1984', author: 'George Orwell', publishedYear: 1949, genre: 'Dystopian' },
@@ -18,3 +18,17 @@ const seedBooks = async () => {
 };
 
 seedBooks().catch(console.error);
+
+
+// async function insert(){
+//     await bookAPI.create({
+//         title: 'Les Miserable',
+//         genre: 'fantasy',
+//         author: 'Victor Hugo',
+//         read: false
+//         // name: 'Saadhya',
+//         // email: 'saadhya.cte@gmail.com'
+//     })
+// }
+// insert();
+
