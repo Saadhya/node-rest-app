@@ -1,7 +1,7 @@
 // seed.js
 const mongoose = require('mongoose');
-const connectDB = require('./db');
-const Book = require('./models/bookModel');
+const connectDB = require('../db');
+const Book = require('./bookModel');
 
 const seedBooks = async () => {
     await connectDB();

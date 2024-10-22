@@ -17,7 +17,17 @@
 - client-req-middleware-req-route
 - route return response to the client
 - get, post, put, patch, delete done
-- 
+- PUT replaces an item
+- PATCH only changes a piece
+- Middleware
+
+# controller
+- create controllers
+
+# testing
+- npm install -D mocha should sinon => here -D makes it a dev dependency
+- npm install supertest -D
+
 # using promise
  await req.book.save()
     .then(resp => {

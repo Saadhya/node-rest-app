@@ -1,34 +1,13 @@
 /* eslint-disable no-param-reassign */
 const express = require('express');
+const booksController = require('../controllers/booksController');
 
 function routes(bookAPI) {
     const baseRouter = express.Router();
-
+    const controller = booksController(bookAPI)
     baseRouter.route('/books')
-        .post((req, res) => {
-            // console.log("post: "+req.body);
-            const book = new bookAPI(req.body);
-            book.save();
-            return res.status(201).json(book);
-        })
-        .get(async (req, res) => {
-            try {
-                const query = {};
-                if (req.query.genre) {
-                    query.genre = req.query.genre;
-                }
-                const books = await bookAPI.find(query);
-                return res.json(books);
-                // bookAPI.find(query, (err, books) => {
-                //     if (err) {
-                //         return res.send(err)
-                //     }
-                //     return res.json(books);
-                // })
-            } catch (err) {
-                return res.status(500).json({ message: 'Get books error' });
-            }
-        })
+        .post(controller.post)
+        .get(controller.get)
 
     // working for fetcing book by id- default method is GET
     baseRouter.use('/books/:bookId', async (req, res, next) => {
@@ -93,32 +72,35 @@ function routes(bookAPI) {
                     }
                 })
         })
-        .delete((req, res) => {
-            // console.log("delete " + req.book);
-            // const book = bookAPI.findById(req.params.bookId);
-            // book.then(resp => {
-            //         if (!resp) {
-            //             return res.status(404).send("Book not found");
-            //         }
-            //         // Now that we have the book, delete it
-            //         return book.remove(); // or book.remove();
-            //     })
-            //     .then(() => res.status(204))
-            //     .catch(err => {
-            //         return res.send("erro " + err)
-            //     })
-            bookAPI.deleteOne({ _id: req.params.bookId })
-                .then(result => {
-                    if (result.deletedCount === 0) {
-                        return res.status(404).send("Book not found");
-                    }
-                    res.status(204).send(); // Send a no-content response
-                })
-                .catch(err => {
-                    console.error("Error deleting book:", err);
-                    return res.status(500).send("Error: " + err);
-                });
+        .delete(async (req, res) => {
+            const bookId = req.params.bookId;
+        
+            try {
+                const result = await bookAPI.findByIdAndDelete(bookId);
+        
+                if (!result) {
+                    return res.status(404).json({ message: "Book not found" });
+                }
+        
+                return res.status(204).send();
+            } catch (error) {
+                console.error('Error deleting book:', error);
+                return res.status(500).json({ message: "Internal server error", error: error.message });
+            }
         })
+        // .delete((req, res) => {
+        //     bookAPI.deleteOne({ _id: req.params.bookId })
+        //         .then(result => {
+        //             if (result.deletedCount === 0) {
+        //                 return res.status(404).send("Book not found");
+        //             }
+        //             res.status(204).send(); // Send a no-content response
+        //         })
+        //         .catch(err => {
+        //             console.error("Error deleting book:", err);
+        //             return res.status(500).send("Error: " + err);
+        //         });
+        // })
 
     // http://localhost:4000/api/book/6713572856a3ecbb6ad7a47b
     // baseRouter.get('/books/:bookId', async (req, res) => {
