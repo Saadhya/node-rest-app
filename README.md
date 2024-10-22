@@ -26,6 +26,7 @@
 
 # testing
 - npm install -D mocha should sinon => here -D makes it a dev dependency
+(npm test)
 - npm install supertest -D
 
 # using promise
