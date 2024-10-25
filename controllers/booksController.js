@@ -17,7 +17,13 @@ function booksController(bookAPI) {
                 query.genre = req.query.genre
             }
             const books = await bookAPI.find(query)
-            return res.json(books)
+            const returnBooks= books.map((book)=>{
+                let newBook = book.toJSON()
+                newBook.links = {}
+                newBook.links.self = `http://${req.headers.host}/api/books/${book._id}`
+                return newBook;
+            })
+            return res.json(returnBooks)
         }
         catch (err) {
             return res.status(500).json({ message: 'Get books error' });

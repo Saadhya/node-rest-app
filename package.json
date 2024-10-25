@@ -23,7 +23,8 @@
     "eslint": "^9.10.0",
     "mocha": "^10.7.3",
     "should": "^13.2.3",
-    "sinon": "^19.0.2"
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0"
   },
   "nodemonConfig": {
     "restartable": "rs",

@@ -27,7 +27,12 @@ function routes(bookAPI) {
         .get(async (req, res) => {
             try {
                 const book = await bookAPI.findById(req.params.bookId)
-                return res.json(book)
+                const returnBooks = book.toJSON();
+                returnBooks.links = {}
+                const genre = req.book.genre.replace(' ', '%20');
+                returnBooks.links.FilterByThisGenre = `http://${req.headers.host}/api/books/?genre=${genre}`;
+
+                return res.json(returnBooks)
             } catch (err) {
                 return res.status(500).json({ message: 'Get books error' });
             }
@@ -74,33 +79,33 @@ function routes(bookAPI) {
         })
         .delete(async (req, res) => {
             const bookId = req.params.bookId;
-        
+
             try {
                 const result = await bookAPI.findByIdAndDelete(bookId);
-        
+
                 if (!result) {
                     return res.status(404).json({ message: "Book not found" });
                 }
-        
+
                 return res.status(204).send();
             } catch (error) {
                 console.error('Error deleting book:', error);
                 return res.status(500).json({ message: "Internal server error", error: error.message });
             }
         })
-        // .delete((req, res) => {
-        //     bookAPI.deleteOne({ _id: req.params.bookId })
-        //         .then(result => {
-        //             if (result.deletedCount === 0) {
-        //                 return res.status(404).send("Book not found");
-        //             }
-        //             res.status(204).send(); // Send a no-content response
-        //         })
-        //         .catch(err => {
-        //             console.error("Error deleting book:", err);
-        //             return res.status(500).send("Error: " + err);
-        //         });
-        // })
+    // .delete((req, res) => {
+    //     bookAPI.deleteOne({ _id: req.params.bookId })
+    //         .then(result => {
+    //             if (result.deletedCount === 0) {
+    //                 return res.status(404).send("Book not found");
+    //             }
+    //             res.status(204).send(); // Send a no-content response
+    //         })
+    //         .catch(err => {
+    //             console.error("Error deleting book:", err);
+    //             return res.status(500).send("Error: " + err);
+    //         });
+    // })
 
     // http://localhost:4000/api/book/6713572856a3ecbb6ad7a47b
     // baseRouter.get('/books/:bookId', async (req, res) => {

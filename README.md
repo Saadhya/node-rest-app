@@ -1,5 +1,7 @@
 <!-- RESTful Web Services with Node.js and Express by PLURALSIGHT -->
 # features
+- what REST is?
+- REST verbs- GET/PUT/POST/DELETE/PATCH
 - multiple router calls in app file
 - implemented HTTP post req 
 - added a new item to the list
@@ -24,10 +26,22 @@
 # controller
 - create controllers
 
-# testing
-- npm install -D mocha should sinon => here -D makes it a dev dependency
-(npm test)
-- npm install supertest -D
+# testing- unit and integration using MOCHA
+- Unit Testing with Mocha
+(npm install -D mocha should sinon) => here -D makes it a dev dependency
+- building controllers for your routes
+- mock objects with sinon.js
+- mock adds some functions & methods to our functions to check what's happeing inside those function and its function call
+- Integration test with supertest
+npm install supertest -D
+- to run tests- ( npm t or npm test)
+
+# HATEOAS
+- what is HATEOAS
+- Using HyperMdia
+- Self documenting API
+- hypermedia- it is to make our API somewhat self-documenting
+- self documenting API
 
 # using promise
  await req.book.save()

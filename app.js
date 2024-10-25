@@ -6,9 +6,10 @@ const db = require('./db');
 const bodyParser = require('body-parser');
 db();
 
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
+// const env = process.env.ENV = 'development';
 
 // const bookRouter = require('./routes/bookRouter')
 // app.use('/api', bookRouter);
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
     res.send("Welcome to nodemon api! ");
 })
 
-app.listen(port, () => {
+app.server = app.listen(port, () => {
     console.log('Running on port: ' + port);
 })
+module.exports = app;
