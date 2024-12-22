@@ -1,4 +1,12 @@
 <!-- RESTful Web Services with Node.js and Express by PLURALSIGHT -->
+# Thanks for reaching out here
+# to run this project
+- get into the node-rest-app
+- run cmd= node app.js
+- http://localhost:5000/api/books
+- http://localhost:5000/api/books/6718c78082646bf600a93b21
+- rest apis you can find in base and book router
+
 # features
 - what REST is?
 - REST verbs- GET/PUT/POST/DELETE/PATCH
@@ -77,5 +85,11 @@ async function deleteBook(req, res) {
     }
 }
 
+# join function- 
+
+# create get req for each specifi resource- express tool
+express.static()
+
+# templating in nodejs- EJS
 
 
